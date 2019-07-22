@@ -43,6 +43,20 @@
             <optional>true</optional>
         </dependency>
         <!-- end -->
+        <!-- okhttp:https://square.github.io/okhttp/ -->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>3.14.1</version>
+        </dependency>
+        <!-- end -->
+        <!-- fastjson:https://mvnrepository.com/artifact/com.alibaba/fastjson/1.2.57 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.57</version>
+        </dependency>
+        <!-- end -->
     </dependencies>
 
     <build>
