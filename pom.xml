@@ -36,6 +36,7 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
         <!-- end -->
+
         <!-- 热部署 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -43,6 +44,7 @@
             <optional>true</optional>
         </dependency>
         <!-- end -->
+
         <!-- okhttp:https://square.github.io/okhttp/ -->
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
@@ -50,6 +52,7 @@
             <version>3.14.1</version>
         </dependency>
         <!-- end -->
+
         <!-- fastjson:https://mvnrepository.com/artifact/com.alibaba/fastjson/1.2.57 -->
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -57,6 +60,29 @@
             <version>1.2.57</version>
         </dependency>
         <!-- end -->
+
+        <!-- h2:https://mvnrepository.com/artifact/com.h2database/h2 -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.199</version>
+        </dependency>
+        <!-- end -->
+
+        <!-- mybatis:http://www.mybatis.org/spring-boot-starter/mybatis-spring-boot-autoconfigure/ -->
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>2.1.0</version>
+        </dependency>
+        <!-- end -->
+        <!-- mybatis -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+        <!-- end -->
+
     </dependencies>
 
     <build>
@@ -65,6 +91,25 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <!-- flyway: -->
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>5.2.4</version>
+                <configuration>
+                    <url>jdbc:h2:~/shequ</url>
+                    <user>sa</user>
+                    <password>123</password>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.h2database</groupId>
+                        <artifactId>h2</artifactId>
+                        <version>1.4.199</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <!-- end -->
         </plugins>
     </build>
 
