@@ -5,6 +5,7 @@ import life.kuxuanzhuzhu.kuxuan_shequ.dto.GithubUser;
 import life.kuxuanzhuzhu.kuxuan_shequ.mapper.UserMapper;
 import life.kuxuanzhuzhu.kuxuan_shequ.model.User;
 import life.kuxuanzhuzhu.kuxuan_shequ.provider.GitHubProvider;
+import life.kuxuanzhuzhu.kuxuan_shequ.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
@@ -35,8 +37,9 @@ public class AuthorizeController {
     @Value("${github.client.url}")
     private String clientUrl;
 
+
     @Autowired
-    private UserMapper userMapper;
+    private UserService userService;
 
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,
@@ -57,14 +60,25 @@ public class AuthorizeController {
             user.setToken(token);
             user.setName(githubUser.getName());
             user.setAccountId(String.valueOf(githubUser.getId()));
-            user.setGmtCreate(System.currentTimeMillis());
-            user.setGmtModified(user.getGmtCreate());
-            userMapper.insert(user);
+       //     user.setGmtCreate(System.currentTimeMillis());
+        //    user.setGmtModified(user.getGmtCreate());
+            user.setAvatarUrl(githubUser.getAvatarUrl());
+            userService.createOrUpdate(user);
             response.addCookie(new Cookie("token", token));
-            return "redirect:/hello";
+            return "redirect:/index";
         } else {
-            return "redirect:/hello";
+            return "redirect:/index";
         }
 
+    }
+
+    @GetMapping("quit")
+    public String quit(HttpServletRequest request,
+                       HttpServletResponse response){
+        request.getSession().removeAttribute("user");
+        Cookie cookie = new Cookie("token",null);
+        response.addCookie(cookie);
+        cookie.setMaxAge(0);
+        return "redirect:/index";
     }
 }

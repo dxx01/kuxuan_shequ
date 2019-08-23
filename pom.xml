@@ -53,6 +53,10 @@
         </dependency>
         <!-- end -->
 
+
+
+
+
         <!-- fastjson:https://mvnrepository.com/artifact/com.alibaba/fastjson/1.2.57 -->
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -61,6 +65,15 @@
         </dependency>
         <!-- end -->
 
+        <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.6</version>
+        </dependency>
+
+
+
         <!-- h2:https://mvnrepository.com/artifact/com.h2database/h2 -->
         <dependency>
             <groupId>com.h2database</groupId>
@@ -68,6 +81,15 @@
             <version>1.4.199</version>
         </dependency>
         <!-- end -->
+
+        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.17</version>
+            <scope>runtime</scope>
+        </dependency>
+
 
         <!-- mybatis:http://www.mybatis.org/spring-boot-starter/mybatis-spring-boot-autoconfigure/ -->
         <dependency>
@@ -83,6 +105,28 @@
         </dependency>
         <!-- end -->
 
+        <!-- lombok:https://www.projectlombok.org/setup/maven -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.8</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- end -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+        </dependency>
+
+        <!-- common:  https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.9</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>
@@ -91,25 +135,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-            <!-- flyway: -->
-            <plugin>
-                <groupId>org.flywaydb</groupId>
-                <artifactId>flyway-maven-plugin</artifactId>
-                <version>5.2.4</version>
-                <configuration>
-                    <url>jdbc:h2:~/shequ</url>
-                    <user>sa</user>
-                    <password>123</password>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.h2database</groupId>
-                        <artifactId>h2</artifactId>
-                        <version>1.4.199</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-            <!-- end -->
         </plugins>
     </build>
 

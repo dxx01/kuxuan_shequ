@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${questionDTO.title}"></title>
+    <link rel="stylesheet" href="/bootstrap-3.3.7-dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="/custom/css/question.css"/>
+    <script type="application/javascript" src="/bootstrap-3.3.7-dist/js/jquery-3.4.1.min.js"></script>
+    <script type="application/javascript" src="/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <!-- 自定义 -->
+    <script type="application/javascript" src="/handlebars/handlebars-v4.1.2.js"></script>
+</head>
+<body>
+<!-- 导航栏 -->
+<div th:insert="~{navigation :: nav}"></div>
+<!-- 主体 -->
+<div class="container-fluid main profile question">
+    <div class="row">
+        <!-- 左边的 -->
+        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+            <!--标题、内容-->
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h3><span th:text="${questionDTO.title}"></span></h3>
+                <span class="text-desc">
+                作者: <span th:text="${questionDTO.user.name}"></span> |
+                发布时间: <span th:text="${#dates.format(questionDTO.gmtCreate,'yyyy-MM-dd HH:mm:ss')}"></span> |
+                阅读数: <span th:text="${questionDTO.viewCount}"></span>
+                </span>
+                <hr>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" th:text="${questionDTO.description}"></div>
+                <br>
+                <hr>
+                <!-- 标签-->
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <span class="label label-info qTag" th:each="tag : ${questionDTO.tag.split(',')}">
+                        <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
+                        <span class="label label-info" th:text="${tag}"></span>
+                    </span>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <a th:href="@{'/publish/'+${questionDTO.id}}"
+                       th:if="${null != session.user && session.user.id == questionDTO.creator}" class="shequ-menu">
+                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                        编辑
+                    </a>
+                </div>
+                <br>
+                <hr>
+            </div>
+            <!--多少个评论-->
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h4>
+                    <span th:text="${questionDTO.commentCount}"></span> 个回复
+                </h4>
+                <hr>
+            </div>
+            <!-- 回复框部分3 -->
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="media">
+                    <div class="media-left">
+                        <span th:if="${session.user != null}">
+                            <img th:src="${session.user.avatarUrl}" class="img-thumbnail media-object" alt="图片丢失了"
+                                 title="用户头像">
+                        </span>
+                        <span th:if="${session.user == null}">
+                            <img src="/custom/img/default.png" class="media-object img-thumbnail" alt="图片丢失了"
+                                 title="用户头像">
+                        </span>
+                    </div>
+                    <div class="media-body">
+                        <input type="hidden" id="id" value="">
+                        <input type="hidden" name="parentId" id="parentId" th:value="${questionDTO.id}"><!-- 问题 -->
+                        <input type="hidden" id="pId" value="0">
+                        <input type="hidden" id="toId" value="0">
+                        <input type="hidden" id="type" value="1">
+                        <textarea class="form-control comment" rows="1" name="content" id="content"
+                                  onclick="changeBig(this)" onmouseover="clearContent()"
+                                  onkeyup="residueContent()" onfocus="changeBig(this)"
+                                  placeholder="想对作者说些什么"></textarea>
+
+                        <div id="cancel" style="display: none">
+                            <button type="button" class="btn btn-success pull-right" onclick="parent()">发表评论</button>
+                            <button type="button" class="btn btn-default pull-right" onclick="cancel()"
+                                    style="margin-right: 10px;">取消回复
+                            </button>
+                            <div class="pull-right"><span id="contentWords">还可以输入1000字</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 评论 -->
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                <div class="media" th:each="commentDTO : ${list}" style="margin-top: 0">
+                    <div class="qBox" th:id="${commentDTO.id}" onmouseover="changeShow(this)"
+                         onmouseout="changeHidden(this)">
+                        <!-- 头像 -->
+                        <div class="media-left">
+                        <span>
+                            <img class="media-object img-thumbnail" th:src="${commentDTO.avatarUrl}" alt="图片丢失了"
+                                 title="评论用户头像">
+                        </span>
+                        </div>
+                        <!-- 评论内容 -->
+                        <div class="media-body qRight">
+                            <div class="qSize">
+                                <span th:text="${commentDTO.uName+'：'+commentDTO.content}"></span>
+                                <span class="qGray"
+                                      th:text="${'('+#dates.format(commentDTO.gmtCreate,'yyyy-MM-dd HH:mm:ss')+')'}"></span>
+                                <span class="qSpan" th:id="${'qSpan-'+commentDTO.id}">
+                                    <span th:if="${session.user != null}">
+                                       <a th:if="${commentDTO.commentator == session.user.id}"
+                                          th:onclick="deleteComment([[${commentDTO.id}]],[[${commentDTO.parentId}]])">删除</a>
+                                    </span>
+                                    <a th:if="${commentDTO.commentCount != 0}" th:data-parentId="${commentDTO.parentId}"
+                                       th:data-commentCount="${commentDTO.commentCount}" th:data-id="${commentDTO.id}"
+                                       onclick="changeChildBox(this)" th:text="${'查看回复('+commentDTO.commentCount+')'}">查看回复</a>
+                                    <a href="#content" th:data-pId="${commentDTO.id}" data-toId="0" data-type="2"
+                                       th:data-content="${commentDTO.uName+'：'+commentDTO.content}"
+                                       th:data-id="${commentDTO.id}"
+                                       onclick="huiFu(this)">回复</a>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="media-right">
+                            <span class="glyphicon glyphicon-thumbs-up qSize" aria-hidden="true"
+                                  th:data-commentId="${commentDTO.id}" data-userId="0" th:if="${null ==session.user}"
+                                  th:classappend="${commentDTO.dStatus == '1'} ? 'damuzhi' : ''"
+                                  style="color: #999999;cursor:pointer;" onclick="dianZan(this)"
+                                  th:text="${commentDTO.likeCount == 0} ? '' : ${commentDTO.likeCount}"></span>
+
+                            <span class="glyphicon glyphicon-thumbs-up qSize" aria-hidden="true"
+                                  th:id="${'zan'+commentDTO.id}"
+                                  th:classappend="${commentDTO.dStatus == '1'} ? 'damuzhi' : ''"
+                                  th:data-commentId="${commentDTO.id}" th:data-userId="${session.user.id}"
+                                  th:if="${null !=session.user}"
+                                  style="color: #999999;cursor:pointer;" onclick="dianZan(this)"
+                                  th:text="${commentDTO.likeCount == 0} ? '' : ${commentDTO.likeCount}"></span>
+                        </div>
+                    </div>
+                    <div th:id="${'childBox-'+commentDTO.id}" style="margin-bottom: 5px;display:none;">
+                        <div th:id="${'childComment'+commentDTO.id}"></div>
+                    </div>
+                    <div class="qBorder"></div>
+                </div>
+                <!-- 模态框 -->
+                <div class="modal fade mtk" id="loginMtk" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content ">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="exampleModalLabel">登录</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="recipient-name" class="control-label">账号:</label>
+                                        <input type="text" class="form-control" id="recipient-name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="message-text" class="control-label">密码:</label>
+                                        <input type="password" class="form-control" id="message-text">
+                                    </div>
+                                    <div style="text-align: center">
+                                        <button type="button" class="btn btn-primary">登录</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer modalLogin">
+                                <ul class="qUl">
+                                    <li class="qUl loginLi"><a class="loginA" href="javascript:">账号密码登录</a></li>
+                                    <li class="qUl loginLi1"><span>|</span></li>
+                                    <li class="qUl loginLi"><a class="loginA"
+                                                               href="https://github.com/login/oauth/authorize?client_id=d7b9062b3e2c2bce1433&redirect_uri=http://localhost:8887/callback&scope=user&state=1">github登录</a>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <!-- 右边的 -->
+        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h4>发起人</h4>
+                <div class="media">
+                    <div class="media-left">
+                        <img class="media-object img-thumbnail" th:src="${questionDTO.user.avatarUrl}" alt="图片丢失了"
+                             title="发起人头像">
+                    </div>
+                    <div class="media-body">
+                        <h5 th:text="${questionDTO.user.name}"></h5>
+                    </div>
+                </div>
+            </div>
+            <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="qh3">站长QQ、交流群</div>
+                <img id="qq" class="img-thumbnail qCode" src="/custom/img/qq.png" alt="图片丢失了">
+            </div>
+            <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h4>相关问题</h4>
+                <ul class="qUl">
+                    <li th:each="xgQuestion : ${questionDTOList}">
+                        <a th:href="@{'/question/'+${xgQuestion.id}}" th:text="${xgQuestion.title}"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script id="childComment-template" type="text/x-handlebars-template">
+    {{#each list}}
+    <div class="media childBox">
+        <div class="qBox" id="{{id}}" onmouseover="changeShow(this)"
+             onmouseout="changeHidden(this)">
+            <!-- 头像 -->
+            <div class="media-left">
+                <span>
+                    <img class="media-object img-thumbnail" src="{{avatarUrl}}" alt="图片丢失了" title="评论用户头像">
+                </span>
+            </div>
+            <!-- 评论内容 -->
+            <div class="media-body qRight">
+                <div class="qSize">
+                    <span>{{uname}}
+                            {{#if toName}}
+                            <span style="color: #999">回复 {{toName}}</span>
+                            {{/if}}
+                            ：{{content}}
+                    </span>
+                    <span class="qGray">({{format gmtCreate}})</span>
+                    <span class="qSpan" id="qSpan-{{id}}">
+                        {{#if_deleteShow commentator ../user.id}}
+                        <a onclick="deleteComment({{id}},{{parentId}})">删除</a>
+                        {{/if_deleteShow}}
+                        <a href="#content" data-id="{{id}}" data-pId="{{parentId}}"
+                           data-toId="{{commentator}}" data-type="2"
+                           data-content="{{uname}}：{{content}}" onclick="huiFu(this)">回复
+                        </a>
+                    </span>
+                </div>
+            </div>
+            <div class="media-right">
+                {{#if ../user.id}}
+                <span class="glyphicon glyphicon-thumbs-up qSize {{if_damuzhi dstatus}}" aria-hidden="true" style="color: #999999;cursor:pointer;"
+                      data-userId="{{../user.id}}" data-commentId="{{id}}" id="zan{{id}}"
+                      onclick="dianZan(this)">{{if_zero likeCount}}</span>
+                {{else}}
+                <span class="glyphicon glyphicon-thumbs-up qSize {{if_damuzhi dstatus}}" aria-hidden="true" style="color: #999999;cursor:pointer;"
+                      data-userId="0"
+                      onclick="dianZan(this)">{{if_zero likeCount}}</span>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+    {{/each}}
+</script>
+<script type="application/javascript" src="/custom/js/questions.js"></script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="life.kuxuanzhuzhu.kuxuan_shequ.mapper.NotificationMapper">
+
+
+    <insert id="insert">
+        insert into notification(
+            notifier,
+            receiver,
+            outerId,
+            type,
+            gmt_create,
+            status,
+            question_id
+        ) values(
+            #{notifier},
+            #{receiver},
+            #{outerId},
+            #{type},
+            unix_timestamp(now()),
+            0,
+            #{questionId}
+        )
+    </insert>
+
+    <!-- 未读评论 -->
+    <select id="selectCountByReceiver" resultType="Integer">
+        select count(1) from notification where receiver = #{receiver} and status = 0
+    </select>
+
+
+    <select id="selectByReceiver" resultType="NotificationDTO">
+        select n.id id,
+               n.notifier notifier,
+               n.receiver receiver,
+               n.outerId outerId,
+               n.type type,
+               n.gmt_Create gmtCreate,
+               n.status status,
+               n.question_id questionId,
+               u.name notifierName,
+               q.title questionTitle,
+               c.content content,
+               (case n.type
+                when 1 then '回复了您的问题'
+                when 2 then '回复了您的评论'
+                when 3 then '点赞了您的评论'
+                end
+               ) typeName
+        from notification n
+        left join comment c on c.id = n.outerId
+        left join user u on u.id = n.notifier
+        left join question q on q.id = n.outerId
+        where n.receiver = #{receiver}
+        order by n.ID desc limit #{size} offset #{offset}
+    </select>
+</mapper>

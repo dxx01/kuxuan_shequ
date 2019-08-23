@@ -1,0 +1,71 @@
+<script id="chileComment-template" type="text/x-handlebars-template">
+    {{#each data}}
+    <div id="childBox-{{id}}" style="margin-bottom: 5px;display:none;">
+        <div class="media childBox">
+            <div class="qBox" id="{{id}}" onmouseover="changeShow(this)"
+                 onmouseout="changeHidden(this)">
+                <!-- 头像 -->
+                <div class="media-left">
+                            <span>
+                                <img class="qImg img-circle" src="{{avatarUrl}}" alt="图片丢失了"
+                                     title="评论用户头像">
+                            </span>
+                </div>
+                <!-- 评论内容 -->
+                <div class="media-body qRight">
+                    <div class="qSize">
+                        <span>{{uName}}：{{content}}</span>
+                        <span class="qGray">{{gmtCreate}}</span>
+                        <span class="qSpan"  id="qSpan-{{id}}">
+                                        <span >
+                                           <a
+                                              onclick="deleteComment({{id}},{{parentId}})">删除</a>
+                                        </span>
+                                        <a href="#content"  data-pId="{{parentId}}" data-toId="{{commentator}}" data-type="2" data-content="{{uName}}：{{content}}"  onclick="huiFu(this)">回复</a>
+                                    </span>
+                    </div>
+                </div>
+                <div class="media-right">
+                                <span class="glyphicon glyphicon-thumbs-up qSize" aria-hidden="true"
+                                      style="color: #999999;"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{/each}}
+</script>
+
+<div class="media childBox" th:each="commentDTO : ${list}">
+    <div class="qBox" th:id="${commentDTO.id}" onmouseover="changeShow(this)"
+         onmouseout="changeHidden(this)">
+        <!-- 头像 -->
+        <div class="media-left">
+                            <span>
+                                <img class="qImg img-circle" th:src="${commentDTO.avatarUrl}" alt="图片丢失了"
+                                     title="评论用户头像">
+                            </span>
+        </div>
+        <!-- 评论内容 -->
+        <div class="media-body qRight">
+            <div class="qSize">
+                <span th:text="${commentDTO.uName+'：'+commentDTO.content }"></span>
+                <span class="qGray"
+                      th:text="${'('+#dates.format(commentDTO.gmtCreate,'yyyy-MM-dd HH:mm:ss')+')'}"></span>
+                <span class="qSpan" th:id="${'qSpan-'+commentDTO.id}">
+                                        <span th:if="${session.user != null}">
+                                           <a th:if="${commentDTO.commentator == session.user.id}"
+                                              th:onclick="deleteComment([[${commentDTO.id}]],[[${commentDTO.parentId}]])">删除</a>
+                                        </span>
+                                        <a href="#content" th:data-pId="${commentDTO.parentId}"
+                                           th:data-toId="${commentDTO.commentator}" data-type="2"
+                                           th:data-content="${commentDTO.uName+'：'+commentDTO.content}"
+                                           onclick="huiFu(this)">回复</a>
+                                    </span>
+            </div>
+        </div>
+        <div class="media-right">
+                                <span class="glyphicon glyphicon-thumbs-up qSize" aria-hidden="true"
+                                      style="color: #999999;"></span>
+        </div>
+    </div>
+</div>

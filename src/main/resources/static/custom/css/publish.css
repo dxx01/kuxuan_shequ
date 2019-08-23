@@ -1,0 +1,70 @@
+.main {
+    margin: 30px;
+    background-color: white;
+}
+
+.publish .pOverflow {
+    overflow: hidden;
+}
+
+.publish .pBorder {
+    border: 1px solid #ccc;
+    padding: 5px 5px 5px 5px;
+    border-radius: 4px;
+    width: 100%;
+    cursor: text;
+}
+
+.publish .pFloat {
+    float: left;
+}
+
+.error {
+    color: red;
+    font-size: 20px;
+}
+
+.publish .qTag {
+    margin: 5px 5px;
+    background: #b5e1ef;
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 5px 7px;
+    float: left;
+}
+
+.publish .qTag:hover {
+    background: #5bc0de;
+}
+
+.publish-input {
+    border: 0;
+/ / 去除未选中状态边框 outline: none;
+/ / 去除选中状态边框 -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    width: 250px;
+    float: left;
+    font-size: inherit;
+    font-size: 14px;
+}
+
+.publish-input:focus {
+    border: none;
+    outline: 0;
+    box-shadow: none;
+}
+
+.publish .input-tag {
+    color: #017e66;
+    background-color: #e7f2ed;
+    text-align: center;
+    padding: 2px 6px;
+    margin-right: 7px;
+    float: left;
+}
+
+.publish .xxx {
+    margin-left: 7px;
+}
+.publish .xxx:hover {
+    cursor: pointer;
+}

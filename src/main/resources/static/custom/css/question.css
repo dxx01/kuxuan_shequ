@@ -1,0 +1,106 @@
+.media-qImg {
+    width: 33px;
+    height: 34px;
+}
+
+.mtk{
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    min-width:50%;
+    overflow: visible;
+    bottom: inherit;
+    right: inherit;
+}
+
+
+
+.media-object {
+    width: 33px;
+    height: 34px;
+}
+
+.question .qSize{
+    font-size:15px;
+    margin-top: 7px;
+}
+
+.question .qBox{
+    padding: 10px 0;
+    margin-top: 0;
+}
+
+.question .childBox{
+    margin-top: 0;
+    margin-left: 20px;
+    padding-left:10px;
+    border-left: 4px solid #c5c5c5;
+}
+
+.question .qBorder{
+    border-bottom: 1px dashed silver;
+    width: 100%;
+}
+
+.question .qRight{
+    padding-right: 50px;
+}
+
+.question .qGray{
+    color: #999999;
+    font-size: 13px;
+    margin-left: 5px;
+}
+.question .qSpan{
+    visibility:hidden;
+}
+.question .qSpan a{
+    font-size: 13px;
+    text-decoration: none;
+    color: #79a5e5;
+    margin-left: 10px;
+}
+.question .qSpan a:hover{
+    opacity:0.7;
+    cursor:pointer;
+}
+
+.question .qUl a{
+    text-decoration: none;
+}
+.question .qUl{
+    list-style: none;
+    padding-left: 0;
+    font-size:15px;
+    overflow:hidden;
+}
+
+.question .qTag{
+    margin-right: 10px;
+}
+
+.question .qCode{
+    width: 280px;
+}
+.question .qh3{
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+.question .modalLogin{
+    text-align: center;
+}
+.question .loginLi{
+    list-style-type: none;
+    display: inline;
+    padding: 0 5px;
+}
+.question .loginLi1{
+    list-style-type: none;
+    display: inline;
+    color: #ebebeb;
+}
+
+.question .damuzhi:before{
+    color:red;
+}

@@ -1,0 +1,67 @@
+body {
+    background-color: #efefef;
+}
+
+.main {
+    margin: 30px;
+    background-color: white;
+}
+
+.btn-publish {
+    float: right;
+    margin-bottom: 15px;
+}
+
+.error {
+    color: red;
+    font-size: 20px;
+}
+
+.media-object {
+    width: 43px;
+    height: 44px;
+}
+
+.text-desc {
+    font-size: 12px;
+    font-weight: normal;
+    color: #999;
+}
+
+.profile .section {
+    margin-top: 15px;
+}
+
+.shequ-menu .icon{
+    margin-right: 7px;
+    font-size: 15px;
+    cursor: pointer;
+    color: #999;
+}
+.shequ-menu .icon:hover{
+    color: #499ef3;
+}
+
+.shequ-menu .commentActive{
+    color: #499ef3;
+}
+
+.shequ-menu .commentBorder{
+    border-radius: 7px; /*设置圆角*/
+    margin-top: 10px;
+    border: 1px solid #eee;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.comment{
+    margin: 0px 0 10px 0;
+}
+.shequ-hr{
+    margin-top: 0px;
+    margin-bottom: 10px;
+}
+
+.commentMedia{
+    padding-bottom: 10px;
+}

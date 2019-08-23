@@ -1,0 +1,26 @@
+{
+  "code": "0",
+  "message": "标签库",
+  "tag": [
+    {
+      "categoryName": "开发语言",
+      "tags": ["javascript", "php", "css", "html", "html5", "java", "node.js", "python", "c++", "c", "golang", "objective-c", "typescript", "shell", "swift", "c#", "sass", "ruby", "bash", "less", "asp.net", "lua", "scala", "coffeescript", "actionscript", "rust", "erlang", "perl"]
+    },
+    {
+      "categoryName": "平台语言",
+      "tags": ["laravel", "spring", "express", "django", "flask", "yii", "ruby-on-rails", "tornado", "koa", "struts"]
+    },
+    {
+      "categoryName": "服务器",
+      "tags": ["linux", "nginx", "docker", "apache", "ubuntu", "centos", "缓存 tomcat", "负载均衡", "unix", "hadoop", "windows-server"]
+    },
+    {
+      "categoryName": "数据库",
+      "tags": ["mysql", "redis", "mongodb", "sql", "oracle", "nosql memcached", "sqlserver", "postgresql", "sqlite"]
+    },
+    {
+      "categoryName": "开发工具",
+      "tags": ["git", "github", "visual-studio-code", "vim", "sublime-text", "xcode intellij-idea", "eclipse", "maven", "ide", "svn", "visual-studio", "atom emacs", "textmate", "hg"]
+    }
+  ]
+}
