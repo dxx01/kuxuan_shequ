@@ -6,11 +6,13 @@ import life.kuxuanzhuzhu.kuxuan_shequ.mapper.UserMapper;
 import life.kuxuanzhuzhu.kuxuan_shequ.model.User;
 import life.kuxuanzhuzhu.kuxuan_shequ.provider.GitHubProvider;
 import life.kuxuanzhuzhu.kuxuan_shequ.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +25,7 @@ import java.util.UUID;
  * @Description 授权控制层
  */
 @Controller
+@Slf4j
 public class AuthorizeController {
 
     @Autowired
@@ -67,6 +70,8 @@ public class AuthorizeController {
             response.addCookie(new Cookie("token", token));
             return "redirect:/index";
         } else {
+            //ctrl+p提示方法参数
+            log.error("AuthorizeController-callback error ,{}",githubUser);
             return "redirect:/index";
         }
 

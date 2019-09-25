@@ -3,6 +3,16 @@
 <mapper namespace="life.kuxuanzhuzhu.kuxuan_shequ.mapper.QuestionMapper">
 
 
+
+
+	<select id="select" resultType="QuestionDTO">
+		select * from question
+		<if test='null != search and "" != search'>
+			where title like CONCAT('%',concat(#{search},'%'))
+		</if>
+		order by ID desc limit #{size} offset #{offset}
+	</select>
+
     <select id="selectByTag" resultType="QuestionDTO">
 		SELECT
 			id,
@@ -15,5 +25,12 @@
 			TAG REGEXP #{tag}
 		AND id != #{id}
     </select>
+
+	<select id="count" resultType="integer">
+		select count(1) from question
+		<if test='null != search and "" != search'>
+			where title like CONCAT('%',concat(#{search},'%'))
+		</if>
+	</select>
 
 </mapper>

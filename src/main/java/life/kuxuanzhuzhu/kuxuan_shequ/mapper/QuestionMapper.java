@@ -17,11 +17,9 @@ public interface QuestionMapper {
     @Insert("insert into question(title,description,gmt_create,gmt_modified,creator,tag) values(#{title},#{description},#{gmtCreate},#{gmtModified},#{creator},#{tag})")
     Integer insert(Question question);
 
-    @Select("select * from question order by ID desc limit #{size} offset #{offset}")
-    List<QuestionDTO> select(@Param("size") Integer size, @Param("offset") Integer offset);
+    List<QuestionDTO> select(@Param("size") Integer size, @Param("offset") Integer offset, @Param("search") String search);
 
-    @Select("select count(1) from question")
-    Integer count();
+    Integer count(String search);
 
     @Select("select * from question where creator = #{userId} order by ID desc limit #{size} offset #{offset}")
     List<QuestionDTO> selectByUserId(@Param("userId") Long userId, @Param("size") Integer size, @Param("offset") Integer offset);

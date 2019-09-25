@@ -3,6 +3,7 @@ package life.kuxuanzhuzhu.kuxuan_shequ.interceptor;
 import life.kuxuanzhuzhu.kuxuan_shequ.mapper.UserMapper;
 import life.kuxuanzhuzhu.kuxuan_shequ.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -22,6 +23,7 @@ public class SessionInterceptor implements HandlerInterceptor {
 
     @Autowired
     private UserMapper userMapper;
+
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -43,7 +45,6 @@ public class SessionInterceptor implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-
     }
 
     @Override

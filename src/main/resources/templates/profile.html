@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${sectionName}"></title>
-    <link rel="stylesheet" href="/bootstrap-3.3.7-dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css"/>
-    <link rel="stylesheet" href="/custom/css/shequ.css"/>
-    <script type="application/javascript" src="/bootstrap-3.3.7-dist/js/jquery-3.4.1.min.js"></script>
-    <script type="application/javascript" src="/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" th:href="@{/bootstrap-3.3.7-dist/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css}"/>
+    <link rel="stylesheet" th:href="@{/custom/css/shequ.css}"/>
+    <script type="application/javascript" th:src="@{/bootstrap-3.3.7-dist/js/jquery-3.4.1.min.js}"></script>
+    <script type="application/javascript" th:src="@{/bootstrap-3.3.7-dist/js/bootstrap.min.js}"></script>
 </head>
 <body>
 <div th:insert="~{navigation :: nav}"></div>
-<div class="container-fluid main profile">
+<div class="container-fluid main profile" style="margin-bottom: 50px;">
     <div class="row">
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
             <h2><span th:text="${sectionName}"></span></h2>
@@ -90,5 +90,6 @@
         </div>
     </div>
 </div>
+<div th:insert="~{footer :: foot}"></div>
 </body>
 </html>

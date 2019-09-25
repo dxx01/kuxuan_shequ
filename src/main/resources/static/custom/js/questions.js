@@ -351,11 +351,6 @@ function comment(id, parentId, content, type, toId) {
                 if (data.code == 2003) {
 
                     $('#loginMtk').modal({show: true});
-                   /* var isTrue = confirm(data.message);
-                    if (isTrue) {
-                        window.open("https://github.com/login/oauth/authorize?client_id=d7b9062b3e2c2bce1433&redirect_uri=http://localhost:8887/callback&scope=user&state=1");
-                        window.localStorage.setItem("closable", true);
-                    }*/
                 } else {
                     alert(data.message);
                 }

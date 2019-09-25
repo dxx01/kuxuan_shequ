@@ -29,11 +29,11 @@ public class QuestionService {
     @Autowired
     private QuestionMapper questionMapper;
 
-    public Result<PageDTO> select(Integer page, Integer size) {
+    public Result<PageDTO> select(Integer page, Integer size, String search) {
 
         PageDTO pageDTO = new PageDTO();
         Integer totalPage = -1;
-        Integer count = questionMapper.count(); //获取总数据条数
+        Integer count = questionMapper.count(search); //获取总数据条数
         if (count > 0) {
             if (count % size == 0) {
                 totalPage = count / size;
@@ -44,7 +44,7 @@ public class QuestionService {
 
         pageDTO.setPageDTO(totalPage, page); //处理数据
         Integer offset = size * (page - 1); //每页5条数据
-        List<QuestionDTO> questionDTOList = questionMapper.select(size, offset);
+        List<QuestionDTO> questionDTOList = questionMapper.select(size, offset, search);
         for (QuestionDTO questionDTO : questionDTOList) {
             User user = userMapper.findById(questionDTO.getCreator());
             //    BeanUtils.copyProperties(question,questionDTO);这个的作用是可以把question里面的数据赋值给questionDTO里面

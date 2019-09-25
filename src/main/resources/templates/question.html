@@ -3,19 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${questionDTO.title}"></title>
-    <link rel="stylesheet" href="/bootstrap-3.3.7-dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css"/>
-    <link rel="stylesheet" href="/custom/css/question.css"/>
-    <script type="application/javascript" src="/bootstrap-3.3.7-dist/js/jquery-3.4.1.min.js"></script>
-    <script type="application/javascript" src="/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" th:href="@{/bootstrap-3.3.7-dist/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css}"/>
+    <link rel="stylesheet" th:href="@{/custom/css/question.css}"/>
+    <link rel="stylesheet" th:href="@{/editor/css/editormd.preview.css}" />
+    <script type="application/javascript" th:src="@{/bootstrap-3.3.7-dist/js/jquery-3.4.1.min.js}"></script>
+    <script type="application/javascript" th:src="@{/bootstrap-3.3.7-dist/js/bootstrap.min.js}"></script>
+    <!-- editor -->
+    <script th:src="@{/editor/editormd.js}"></script>
+    <script th:src="@{/editor/lib/marked.min.js}"></script>
+    <script th:src="@{/editor/lib/prettify.min.js}"></script>
     <!-- 自定义 -->
-    <script type="application/javascript" src="/handlebars/handlebars-v4.1.2.js"></script>
+    <script type="application/javascript" th:src="@{/handlebars/handlebars-v4.1.2.js}"></script>
 </head>
 <body>
 <!-- 导航栏 -->
 <div th:insert="~{navigation :: nav}"></div>
 <!-- 主体 -->
-<div class="container-fluid main profile question">
+<div class="container-fluid main profile question" style="margin-bottom: 50px;">
     <div class="row">
         <!-- 左边的 -->
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
@@ -28,8 +33,19 @@
                 阅读数: <span th:text="${questionDTO.viewCount}"></span>
                 </span>
                 <hr>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" th:text="${questionDTO.description}"></div>
-                <br>
+                <!-- 描述-->
+                <div id="question-view">
+                    <textarea style="display:none;" th:text="${questionDTO.description}"></textarea>
+                    <script type="text/javascript">
+                        $(function() {
+                            var testView = editormd.markdownToHTML("question-view", {
+                                // markdown : "[TOC]\n### Hello world!\n## Heading 2", // Also, you can dynamic set Markdown text
+                                // htmlDecode : true,  // Enable / disable HTML tag encode.
+                                // htmlDecode : "style,script,iframe",  // Note: If enabled, you should filter some dangerous HTML tags for website security.
+                            });
+                        });
+                    </script>
+                </div>
                 <hr>
                 <!-- 标签-->
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -64,7 +80,7 @@
                                  title="用户头像">
                         </span>
                         <span th:if="${session.user == null}">
-                            <img src="/custom/img/default.png" class="media-object img-thumbnail" alt="图片丢失了"
+                            <img th:src="@{/custom/img/default.png}" class="media-object img-thumbnail" alt="图片丢失了"
                                  title="用户头像">
                         </span>
                     </div>
@@ -201,7 +217,7 @@
             <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="qh3">站长QQ、交流群</div>
-                <img id="qq" class="img-thumbnail qCode" src="/custom/img/qq.png" alt="图片丢失了">
+                <img id="qq" class="img-thumbnail qCode" th:src="@{/custom/img/qq.png}" alt="图片丢失了">
             </div>
             <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -215,6 +231,7 @@
         </div>
     </div>
 </div>
+<div th:insert="~{footer :: foot}"></div>
 <script id="childComment-template" type="text/x-handlebars-template">
     {{#each list}}
     <div class="media childBox">
@@ -262,6 +279,6 @@
     </div>
     {{/each}}
 </script>
-<script type="application/javascript" src="/custom/js/questions.js"></script>
+<script type="application/javascript" th:src="@{/custom/js/questions.js}"></script>
 </body>
 </html>

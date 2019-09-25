@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>酷炫豬豬</title>
-    <link rel="stylesheet" href="/bootstrap-3.3.7-dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css"/>
-    <link rel="stylesheet" href="/custom/css/publish.css"/>
-    <link rel="stylesheet" href="/editor/css/editormd.min.css"/>
-    <script type="application/javascript" src="/bootstrap-3.3.7-dist/js/jquery-3.4.1.min.js"></script>
-    <script type="application/javascript" src="/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
-    <script type="application/javascript" src="/custom/js/publish.js"></script>
-    <script type="application/javascript" src="/editor/editormd.min.js"></script>
-    <script type="application/javascript" src="/handlebars/handlebars-v4.1.2.js"></script>
+    <link rel="stylesheet" th:href="@{/bootstrap-3.3.7-dist/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css}"/>
+    <link rel="stylesheet" th:href="@{/custom/css/publish.css}"/>
+    <link rel="stylesheet" th:href="@{/editor/css/editormd.min.css}"/>
+    <script type="application/javascript" th:src="@{/bootstrap-3.3.7-dist/js/jquery-3.4.1.min.js}"></script>
+    <script type="application/javascript" th:src="@{/bootstrap-3.3.7-dist/js/bootstrap.min.js}"></script>
+    <script type="application/javascript" th:src="@{/custom/js/publish.js}"></script>
+    <script type="application/javascript" th:src="@{/editor/editormd.min.js}"></script>
+    <script type="application/javascript" th:src="@{/handlebars/handlebars-v4.1.2.js}"></script>
 </head>
 <body>
 <div th:insert="~{navigation :: nav}"></div>
-<div class="container-fluid main publish">
+<div class="container-fluid main publish" style="margin-bottom: 50px;">
     <div class="row">
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
             <h2><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>发起</h2>
@@ -38,7 +38,14 @@
                             var editor = editormd("question-editor", {
                                  width  : "100%",
                                  height : "350px",
-                                path: "/editor/lib/"
+                                path: "/editor/lib/",
+                                delay:0,
+                                watch:false,
+                                placeholder:'请输入问题描述',
+                                emoji:true,
+                                imageUpload:true,
+                                imageFormats   : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                                imageUploadURL : "/file/upload",
                             });
                         });
                     </script>
@@ -47,7 +54,7 @@
                     <label for="tag">添加标签</label>
                     <div class="pOverflow pBorder" id="publish-popover" onclick="showTag()">
                         <div class="pFloat" id="chooseAfter-template">
-                            <div class="input-tag" th:each="tag : ${tags}" th:inline="text">[[${tag}]]<span
+                            <div class="input-tag" th:each="tag : ${tags}" th:if="${null !=tags}" th:inline="text">[[${tag}]]<span
                                     th:id="${'c-'+tagStat.index}" class="xxx" onclick="remove(this)">×</span></div>
                         </div>
                         <input type="text" class="publish-input" id="tag" name="tag" placeholder="标签，如：php（用逗号,分号;分隔）"
@@ -79,6 +86,7 @@
         </div>
     </div>
 </div>
+<div th:insert="~{footer :: foot}"></div>
 <script id="tags-template" type="text/x-handlebars-template">
     <div>
         <ul class="nav nav-tabs" role="tablist" id="publish-tabList">

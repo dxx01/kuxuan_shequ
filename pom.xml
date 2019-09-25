@@ -11,6 +11,7 @@
     <groupId>life.kuxuanzhuzhu</groupId>
     <artifactId>kuxuan_shequ</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
     <name>kuxuan_shequ</name>
     <description>kuxuan_shequ</description>
 
@@ -22,6 +23,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <!-- 移除嵌入式tomcat插件 -->
+            <!--<exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>-->
         </dependency>
 
         <dependency>
@@ -53,9 +61,13 @@
         </dependency>
         <!-- end -->
 
-
-
-
+        <!-- ucloud  Ufile  sdk上传:https://github.com/ucloud/ufile-sdk-java -->
+        <dependency>
+            <groupId>cn.ucloud.ufile</groupId>
+            <artifactId>ufile-client-java</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+        <!-- end -->
 
         <!-- fastjson:https://mvnrepository.com/artifact/com.alibaba/fastjson/1.2.57 -->
         <dependency>
@@ -72,14 +84,21 @@
             <version>2.6</version>
         </dependency>
 
+        <!-- servlet-api依赖-->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
+        </dependency>
 
 
         <!-- h2:https://mvnrepository.com/artifact/com.h2database/h2 -->
-        <dependency>
+        <!--<dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>1.4.199</version>
-        </dependency>
+        </dependency>-->
         <!-- end -->
 
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
@@ -125,6 +144,11 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.9</version>
         </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
+        </dependency>
 
 
     </dependencies>
@@ -134,6 +158,18 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+
+                <!--这里写上main方法所在类的路径-->
+                <configuration>
+                    <mainClass>life.kuxuanzhuzhu.kuxuan_shequ.KuxuanShequApplication</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

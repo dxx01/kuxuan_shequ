@@ -32,31 +32,34 @@ function showTag() {
     if(0 == tags.length){
         var textList = $('#chooseAfter-template').children('div');//标签集合
         var tag = textListTool(textList);
-        tags = tag.split(',');
+        if('' != tag){
+            tags = tag.split(',');
+        }
     }
+    $.ajax({
+        type: "GET",  // 请求方式
+        url: "/getTag",  // 目标资源
+        dataType: "json",  // 服务器响应的数据类型
+        success: function (data) {  // readystate == 4 && status == 200
+            console.log(data)
+            addAllTags(data);//把所有标签添加到缓存
+            //获取模板
+            var source = $("#tags-template").html();
+            //模板渲染
+            var template = Handlebars.compile(source);
+            //传输数据
+            var html = template(data);
+            //模版装载到dom节点上
+            $("#tags-templates").html(html);
+            $('#tab-content div:first-child').addClass('active');
+            $('#publish-tabList li:first-child').addClass('active');
+        }
+    });
     var isShow = $('#tags-templates').attr('data-true');
     $('#tag').focus();//input获取焦点
     if ('no' === isShow) {
         $('#tags-templates').attr('data-true','yes');
-        $.ajax({
-            type: "get",  // 请求方式
-            url: "/getTag",  // 目标资源
-            dataType: "json",  // 服务器响应的数据类型
-            success: function (data) {  // readystate == 4 && status == 200
-                console.log(data)
-                addAllTags(data);//把所有标签添加到缓存
-                //获取模板
-                var source = $("#tags-template").html();
-                //模板渲染
-                var template = Handlebars.compile(source);
-                //传输数据
-                var html = template(data);
-                //模版装载到dom节点上
-                $("#tags-templates").html(html);
-                $('#tab-content div:first-child').addClass('active');
-                $('#publish-tabList li:first-child').addClass('active');
-            }
-        });
+
     }
 }
 
