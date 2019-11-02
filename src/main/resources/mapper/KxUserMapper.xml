@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="life.kuxuanzhuzhu.kuxuan_shequ.mapper.KxUserMapper">
+
+    <insert id="insert">
+        insert into kxuser(id,name,email,pass,token,avatar_url,gmt_create,gmt_modified,status)
+        values(#{id},#{name},#{email},#{pass},#{token},#{avatarUrl},#{gmtCreate},#{gmtModified},0);
+    </insert>
+
+
+    <select id="selectByEmail" resultType="KxUser">
+        select * from kxuser where email = #{email}
+    </select>
+
+    <select id="selectByToken" resultType="KxUser">
+        select * from kxuser where token = #{token}
+    </select>
+
+    <select id="login" resultType="KxUser">
+        select * from kxuser where email = #{email} and pass = #{pass}
+    </select>
+
+
+    <select id="selectById" resultType="KxUser">
+        select * from kxuser where id = #{id}
+    </select>
+
+
+</mapper>

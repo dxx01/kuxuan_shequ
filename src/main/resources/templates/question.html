@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title th:text="${questionDTO.title}"></title>
     <link rel="stylesheet" th:href="@{/bootstrap-3.3.7-dist/css/bootstrap.min.css}"/>
     <link rel="stylesheet" th:href="@{/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css}"/>
@@ -28,7 +28,7 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <h3><span th:text="${questionDTO.title}"></span></h3>
                 <span class="text-desc">
-                作者: <span th:text="${questionDTO.user.name}"></span> |
+                作者: <span th:text="${questionDTO.userAndKxUser.name}"></span> |
                 发布时间: <span th:text="${#dates.format(questionDTO.gmtCreate,'yyyy-MM-dd HH:mm:ss')}"></span> |
                 阅读数: <span th:text="${questionDTO.viewCount}"></span>
                 </span>
@@ -123,14 +123,15 @@
                                 <span th:text="${commentDTO.uName+'：'+commentDTO.content}"></span>
                                 <span class="qGray"
                                       th:text="${'('+#dates.format(commentDTO.gmtCreate,'yyyy-MM-dd HH:mm:ss')+')'}"></span>
+                                <a class="qa" th:if="${commentDTO.commentCount != 0}" th:data-parentId="${commentDTO.parentId}"
+                                   th:data-commentCount="${commentDTO.commentCount}" th:data-id="${commentDTO.id}"
+                                   onclick="changeChildBox(this)" th:text="${'查看回复('+commentDTO.commentCount+')'}">查看回复</a>
                                 <span class="qSpan" th:id="${'qSpan-'+commentDTO.id}">
                                     <span th:if="${session.user != null}">
                                        <a th:if="${commentDTO.commentator == session.user.id}"
                                           th:onclick="deleteComment([[${commentDTO.id}]],[[${commentDTO.parentId}]])">删除</a>
                                     </span>
-                                    <a th:if="${commentDTO.commentCount != 0}" th:data-parentId="${commentDTO.parentId}"
-                                       th:data-commentCount="${commentDTO.commentCount}" th:data-id="${commentDTO.id}"
-                                       onclick="changeChildBox(this)" th:text="${'查看回复('+commentDTO.commentCount+')'}">查看回复</a>
+
                                     <a href="#content" th:data-pId="${commentDTO.id}" data-toId="0" data-type="2"
                                        th:data-content="${commentDTO.uName+'：'+commentDTO.content}"
                                        th:data-id="${commentDTO.id}"
@@ -188,7 +189,7 @@
                                     <li class="qUl loginLi"><a class="loginA" href="javascript:">账号密码登录</a></li>
                                     <li class="qUl loginLi1"><span>|</span></li>
                                     <li class="qUl loginLi"><a class="loginA"
-                                                               href="https://github.com/login/oauth/authorize?client_id=d7b9062b3e2c2bce1433&redirect_uri=http://localhost:8887/callback&scope=user&state=1">github登录</a>
+                                                               href="https://github.com/login/oauth/authorize?client_id=d7b9062b3e2c2bce1433&redirect_uri=http://localhost/callback&scope=user&state=1">github登录</a>
                                     </li>
                                 </ul>
 
@@ -206,11 +207,11 @@
                 <h4>发起人</h4>
                 <div class="media">
                     <div class="media-left">
-                        <img class="media-object img-thumbnail" th:src="${questionDTO.user.avatarUrl}" alt="图片丢失了"
+                        <img class="media-object img-thumbnail" th:src="${questionDTO.userAndKxUser.avatarUrl}" alt="图片丢失了"
                              title="发起人头像">
                     </div>
                     <div class="media-body">
-                        <h5 th:text="${questionDTO.user.name}"></h5>
+                        <h5 th:text="${questionDTO.userAndKxUser.name}"></h5>
                     </div>
                 </div>
             </div>

@@ -5,15 +5,24 @@ import life.kuxuanzhuzhu.kuxuan_shequ.Exception.CustomException;
 import life.kuxuanzhuzhu.kuxuan_shequ.dto.PageDTO;
 import life.kuxuanzhuzhu.kuxuan_shequ.dto.QuestionDTO;
 import life.kuxuanzhuzhu.kuxuan_shequ.dto.Result;
+import life.kuxuanzhuzhu.kuxuan_shequ.dto.UserAndKxUser;
+import life.kuxuanzhuzhu.kuxuan_shequ.mapper.KxUserMapper;
+import life.kuxuanzhuzhu.kuxuan_shequ.mapper.NotificationMapper;
 import life.kuxuanzhuzhu.kuxuan_shequ.mapper.QuestionMapper;
 import life.kuxuanzhuzhu.kuxuan_shequ.mapper.UserMapper;
+import life.kuxuanzhuzhu.kuxuan_shequ.model.KxUser;
 import life.kuxuanzhuzhu.kuxuan_shequ.model.Question;
 import life.kuxuanzhuzhu.kuxuan_shequ.model.User;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author 邓鑫鑫
@@ -28,6 +37,41 @@ public class QuestionService {
 
     @Autowired
     private QuestionMapper questionMapper;
+
+    @Autowired
+    private KxUserMapper kxUserMapper;
+
+
+    @Autowired
+    private RedisTemplate<Object,Object> redisTemplate;
+
+
+    /**
+     * 用户处理方法，将不是为空的用户信息转移到UserAndKxUser
+     * @param creator
+     * @return
+     */
+    public UserAndKxUser disposeUser(String creator){
+        User user = userMapper.findById(creator);
+        KxUser kxUser = kxUserMapper.selectById(creator);
+        UserAndKxUser userAndKxUser = new UserAndKxUser();
+        if(null !=user && null != kxUser){
+            if(user.getId().equals(kxUser.getId())){
+                BeanUtils.copyProperties(user,userAndKxUser);
+                return userAndKxUser;
+            }
+        }
+
+        if(null != user){
+            BeanUtils.copyProperties(user,userAndKxUser);
+        }
+        if(null != kxUser){
+            BeanUtils.copyProperties(kxUser,userAndKxUser);
+        }
+        return userAndKxUser;
+    }
+
+
 
     public Result<PageDTO> select(Integer page, Integer size, String search) {
 
@@ -46,16 +90,16 @@ public class QuestionService {
         Integer offset = size * (page - 1); //每页5条数据
         List<QuestionDTO> questionDTOList = questionMapper.select(size, offset, search);
         for (QuestionDTO questionDTO : questionDTOList) {
-            User user = userMapper.findById(questionDTO.getCreator());
+            UserAndKxUser userAndKxUser = disposeUser(questionDTO.getCreator());
             //    BeanUtils.copyProperties(question,questionDTO);这个的作用是可以把question里面的数据赋值给questionDTO里面
-            questionDTO.setUser(user);
+            questionDTO.setUserAndKxUser(userAndKxUser);
         }
 
         pageDTO.setData(questionDTOList);
         return Result.ok(pageDTO);
     }
 
-    public Result<PageDTO> selectByUserId(Long id, Integer page, Integer size) {
+    public Result<PageDTO> selectByUserId(String id, Integer page, Integer size) {
         PageDTO pageDTO = new PageDTO();
         Integer totalPage = -1;
         Integer count = questionMapper.countByUserId(id); //获取总数据条数
@@ -71,22 +115,38 @@ public class QuestionService {
         Integer offset = size * (page - 1); //每页5条数据
         List<QuestionDTO> questionDTOList = questionMapper.selectByUserId(id, size, offset);
         for (QuestionDTO questionDTO : questionDTOList) {
-            User user = userMapper.findById(questionDTO.getCreator());
+            UserAndKxUser userAndKxUser = disposeUser(questionDTO.getCreator());
             //    BeanUtils.copyProperties(question,questionDTO);这个的作用是可以把question里面的数据赋值给questionDTO里面
-            questionDTO.setUser(user);
+            questionDTO.setUserAndKxUser(userAndKxUser);
         }
 
         pageDTO.setData(questionDTOList);
         return Result.ok(pageDTO);
     }
 
+
     public QuestionDTO getById(Long id) {
-        QuestionDTO questionDTO = questionMapper.getById(id);
-        if (null == questionDTO) {
-            throw new CustomException(CustomErrorCode.QUESTION_NOT_FOUND);
+
+        //redis序列化器 操作字符的StringRedisSerializer
+        RedisSerializer redisSerializer = new StringRedisSerializer();
+        redisTemplate.setKeySerializer(redisSerializer);
+
+        QuestionDTO questionDTO = (QuestionDTO) redisTemplate.opsForValue().get("questionDTO"+id);
+        if(null == questionDTO){
+            synchronized (this){
+                questionDTO = (QuestionDTO) redisTemplate.opsForValue().get("questionDTO"+id);
+                if(null == questionDTO){
+                    questionDTO = questionMapper.getById(id);
+                    if (null == questionDTO) {
+                        throw new CustomException(CustomErrorCode.QUESTION_NOT_FOUND);
+                    }
+                    UserAndKxUser userAndKxUser = disposeUser(questionDTO.getCreator());
+                    //    BeanUtils.copyProperties(question,questionDTO);这个的作用是可以把question里面的数据赋值给questionDTO里面
+                    questionDTO.setUserAndKxUser(userAndKxUser);
+                    redisTemplate.opsForValue().set("questionDTO"+id,questionDTO,60, TimeUnit.SECONDS);
+                }
+            }
         }
-        User user = userMapper.findById(questionDTO.getCreator());
-        questionDTO.setUser(user);
         return questionDTO;
     }
 

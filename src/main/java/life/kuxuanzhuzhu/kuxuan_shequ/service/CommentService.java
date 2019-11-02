@@ -107,6 +107,7 @@ public class CommentService {
         //通知创建
         notification.setNotifier(comment.getCommentator());//发送人
         notification.setOuterId(comment.getParentId());//评论的id
+        notification.setGmtCreate(System.currentTimeMillis());
         notificationMapper.insert(notification);
     }
 

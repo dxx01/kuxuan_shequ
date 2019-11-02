@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 public class DianZan {
     private Long id;
-    private Long userId;
+    private String userId;
     private Long commentId;
     private Long questionId;
     private String status;

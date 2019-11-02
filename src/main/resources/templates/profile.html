@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title th:text="${sectionName}"></title>
     <link rel="stylesheet" th:href="@{/bootstrap-3.3.7-dist/css/bootstrap.min.css}"/>
     <link rel="stylesheet" th:href="@{/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css}"/>
     <link rel="stylesheet" th:href="@{/custom/css/shequ.css}"/>
+    <link rel="stylesheet" th:href="@{/custom/css/profile.css}"/>
     <script type="application/javascript" th:src="@{/bootstrap-3.3.7-dist/js/jquery-3.4.1.min.js}"></script>
     <script type="application/javascript" th:src="@{/bootstrap-3.3.7-dist/js/bootstrap.min.js}"></script>
 </head>
 <body>
 <div th:insert="~{navigation :: nav}"></div>
 <div class="container-fluid main profile" style="margin-bottom: 50px;">
-    <div class="row">
+    <div class="row profile">
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
             <h2><span th:text="${sectionName}"></span></h2>
             <hr>
@@ -20,7 +21,7 @@
                 <div class="media" th:each="questionDTO : ${pageDTO.data}">
                     <div class="media-left">
                         <a href="#">
-                            <img class="media-object img-thumbnail" th:src="${questionDTO.user.avatarUrl}" alt="图片丢失了"
+                            <img class="media-object img-thumbnail" th:src="${questionDTO.userAndKxUser.avatarUrl}" alt="图片丢失了"
                                  title="用户头像">
                         </a>
                     </div>
@@ -37,13 +38,14 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" th:if="${section == 'replies' && error == null}">
                 <div class="media" th:each="notification : ${pageDTO.data}">
                     <div class="media-body">
-                        <p class="media-heading">
+                        <a class="media-heading p-a pBlack" th:href="@{'/question/'+${notification.questionId}+'/'+${notification.id}}">
                             <span th:text="${notification.notifierName+' 于'}"></span>
                             <span th:text="${#dates.format(notification.gmtCreate,'yyyy-MM-dd HH:mm:ss')}"></span>
                             <span th:text="${notification.typeName}"></span>
-                            <a th:href="@{'/question/'+${notification.questionId}}" th:if="${notification.questionTitle != null}" th:text="${notification.questionTitle}"></a>
-                            <a th:href="@{'/question/'+${notification.questionId}}" th:if="${notification.content != null}" th:text="${notification.content}"></a>
-                        </p>
+                            <a class="p-a" th:href="@{'/question/'+${notification.questionId}+'/'+${notification.id}}" th:if="${notification.questionTitle != null}" th:text="${notification.questionTitle}"></a>
+                            <a class="p-a" th:href="@{'/question/'+${notification.questionId}+'/'+${notification.id}}" th:if="${notification.content != null}" th:text="${notification.content}"></a>
+                            <span class="label" th:classappend="${notification.status == '已读'}? 'label-success' : 'label-danger'" th:text="${notification.status}"></span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -83,7 +85,7 @@
                    th:classappend="${section == 'questions'} ? 'active' : ''">我的问题</a>
                 <a href="/profile/replies" class="list-group-item"
                    th:classappend="${section == 'replies'} ? 'active' : ''">最新回复
-                    <span class="badge" th:text="${unRead}"></span>
+                    <span class="badge" th:text="${session.inFormNum}"></span>
                 </a>
             </div>
 

@@ -1,7 +1,6 @@
 package life.kuxuanzhuzhu.kuxuan_shequ.dto;
 
 import lombok.Data;
-import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;

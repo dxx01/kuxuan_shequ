@@ -10,23 +10,41 @@
 
     <!-- 查询问题评论和子评论 -->
     <select id="selectByIdAndParentIdAndType" resultType="CommentDTO">
-        select c.ID,c.PARENT_ID,c.TYPE,c.COMMENTATOR,c.GMT_CREATE,c.GMT_MODIFIED,c.LIKE_COUNT,c.CONTENT,c.COMMENT_COUNT,
-        (select name from user where user.id = c.to_id) as toName,
-        u.NAME uNAME,u.ACCOUNT_ID,u.TOKEN,u.GMT_CREATE uGmtCreate,u.GMT_MODIFIED uGmtModified,u.AVATAR_URL,d.status dStatus
+    select c.ID,c.PARENT_ID,c.TYPE,c.COMMENTATOR,c.GMT_CREATE,c.GMT_MODIFIED,c.LIKE_COUNT,c.CONTENT,c.COMMENT_COUNT,
+				case
+				when (select name from user where user.id = c.to_id) != 'null' then (select name from user where user.id = c.to_id)
+				else (select name from kxuser where kxuser.id = c.to_id)
+				end as toName,
+				case
+				when u.NAME != 'null' then u.name
+				else k.name
+				end as uName,
+				case
+				when u.AVATAR_URL != 'null' then u.AVATAR_URL
+				else k.AVATAR_URL
+				end as avatarUrl,
+				d.status dStatus
         from COMMENT c
         left join USER u on u.ID = c.COMMENTATOR
+		left join kxuser k on k.id = c.COMMENTATOR
         left join dianzan d on d.comment_id = c.id
         where c.PARENT_ID = #{parentId}
         and c.TYPE = #{type}
-        order by ID desc
+        order by ID desc;
     </select>
 
     <!-- 删除评论 -->
-    <delete id="deleteById">
+    <!--<delete id="deleteById">
         delete from COMMENT
         where id = #{id}
         or (PARENT_ID = #{id} and TYPE = 2)
-    </delete>
+    </delete>-->
+    <update id="deleteById">
+        update COMMENT
+        set status = 1
+        where id = #{id}
+        or (PARENT_ID = #{id} and TYPE = 2)
+    </update>
 
 
     <update id="updateCommentByIdUpOrDown">

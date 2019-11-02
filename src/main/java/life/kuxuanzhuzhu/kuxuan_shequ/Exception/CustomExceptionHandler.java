@@ -2,7 +2,6 @@ package life.kuxuanzhuzhu.kuxuan_shequ.Exception;
 
 import com.alibaba.fastjson.JSON;
 import life.kuxuanzhuzhu.kuxuan_shequ.dto.Result;
-import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

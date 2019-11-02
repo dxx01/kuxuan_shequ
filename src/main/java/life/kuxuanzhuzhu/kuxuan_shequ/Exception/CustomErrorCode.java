@@ -24,7 +24,8 @@ public enum CustomErrorCode implements ICustomErrorCode {
     COMMENT_DELETE_FAIL(2013, "删除失败，可能是删除的评论不存了，要不刷新试试？"),
     COMMENT_FAIL(2014,"评论失败,要不刷新试试？"),
     No_NOTICE(2015,"暂无通知"),
-    DIANZAN_FAIL(2016,"点赞失败,请稍后再试！")
+    DIANZAN_FAIL(2016,"点赞失败,请稍后再试！"),
+    REGISTER_FAIL(2017,"注册失败，请稍后再试！")
     ;
     private Integer code;
     private String message;

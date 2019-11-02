@@ -25,19 +25,17 @@ public class NotificationService {
     private NotificationMapper notificationMapper;
 
     /**
-     *
+     *根据用户的编号获取通知的消息
      * @param id
      * @param page
      * @param size
      * @return
      */
-    public Result<PageDTO> selectByReceiver(Long id, Integer page, Integer size) {
-        Map<String,Object> map = new HashMap<>();
+    public Result<PageDTO> selectByReceiver(String id, Integer page, Integer size) {
 
         PageDTO pageDTO = new PageDTO();
         Integer totalPage = -1;
-        Integer count = notificationMapper.selectCountByReceiver(id);
-        map.put("unRead",count);
+        Integer count = notificationMapper.selectAllCountByReceiver(id);
         if (count > 0) {
             if (count % size == 0) {
                 totalPage = count / size;
@@ -51,7 +49,11 @@ public class NotificationService {
         Integer offset = size * (page - 1); //每页5条数据
         List<NotificationDTO> list = notificationMapper.selectByReceiver(id,size, offset);
         pageDTO.setData(list);
-        map.put("pageDTO",pageDTO);
-        return Result.ok(map);
+        return Result.ok(pageDTO);
+    }
+
+
+    public void updateStatusById(Long id){
+        notificationMapper.updateStatusById(id);
     }
 }

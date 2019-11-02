@@ -16,6 +16,10 @@ public class UserService {
     private UserMapper userMapper;
 
 
+    /**
+     * 获取用户信息后，判断该用户是否在数据库已存在记录，进行新增或更新操作
+     * @param user
+     */
     public void createOrUpdate(User user) {
         User dbUser = userMapper.findByAccountId(user.getAccountId());
         if(null != dbUser){

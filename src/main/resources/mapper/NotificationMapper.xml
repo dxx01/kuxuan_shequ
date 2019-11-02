@@ -17,7 +17,7 @@
             #{receiver},
             #{outerId},
             #{type},
-            unix_timestamp(now()),
+            #{gmtCreate},
             0,
             #{questionId}
         )
@@ -28,6 +28,11 @@
         select count(1) from notification where receiver = #{receiver} and status = 0
     </select>
 
+    <!-- 未读评论 -->
+    <select id="selectAllCountByReceiver" resultType="Integer">
+        select count(1) from notification where receiver = #{receiver}
+    </select>
+
 
     <select id="selectByReceiver" resultType="NotificationDTO">
         select n.id id,
@@ -36,9 +41,17 @@
                n.outerId outerId,
                n.type type,
                n.gmt_Create gmtCreate,
-               n.status status,
+               (case n.status
+                when 0 then '未读'
+                when 1 then '已读'
+                end
+               ) status,
                n.question_id questionId,
-               u.name notifierName,
+               (case
+				when u.name != 'null' then u.name
+				else k.name
+				end
+				) notifierName,
                q.title questionTitle,
                c.content content,
                (case n.type
@@ -50,8 +63,16 @@
         from notification n
         left join comment c on c.id = n.outerId
         left join user u on u.id = n.notifier
+        left join kxuser k on k.id = n.notifier
         left join question q on q.id = n.outerId
         where n.receiver = #{receiver}
-        order by n.ID desc limit #{size} offset #{offset}
+        order by n.status asc,n.ID desc limit #{size} offset #{offset}
     </select>
+
+
+    <update id="updateStatusById">
+        update notification
+        set status = 1
+        where id = #{id}
+    </update>
 </mapper>

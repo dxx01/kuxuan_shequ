@@ -22,7 +22,7 @@ import java.util.UUID;
 /**
  * @author 邓鑫鑫
  * @date 2019年07月22日 16:49:27
- * @Description 授权控制层
+ * @Description github登录授权控制层
  */
 @Controller
 @Slf4j
@@ -56,15 +56,14 @@ public class AuthorizeController {
         accessTokenDTO.setState(state);
         String accessToken = gitHubProvider.getAccessToken(accessTokenDTO);
         GithubUser githubUser = gitHubProvider.getUser(accessToken);
-        // System.out.println(githubUser.getName());
         if (null != githubUser) {
             User user = new User();
             String token = UUID.randomUUID().toString();
+            String id = UUID.randomUUID().toString();
+            user.setId(id);
             user.setToken(token);
             user.setName(githubUser.getName());
             user.setAccountId(String.valueOf(githubUser.getId()));
-       //     user.setGmtCreate(System.currentTimeMillis());
-        //    user.setGmtModified(user.getGmtCreate());
             user.setAvatarUrl(githubUser.getAvatarUrl());
             userService.createOrUpdate(user);
             response.addCookie(new Cookie("token", token));
@@ -81,6 +80,7 @@ public class AuthorizeController {
     public String quit(HttpServletRequest request,
                        HttpServletResponse response){
         request.getSession().removeAttribute("user");
+        request.getSession().removeAttribute("inFormNum");
         Cookie cookie = new Cookie("token",null);
         response.addCookie(cookie);
         cookie.setMaxAge(0);

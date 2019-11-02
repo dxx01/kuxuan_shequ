@@ -1,7 +1,6 @@
 package life.kuxuanzhuzhu.kuxuan_shequ.enums;
 
 
-import org.junit.Test;
 
 /**
  * @author 邓鑫鑫

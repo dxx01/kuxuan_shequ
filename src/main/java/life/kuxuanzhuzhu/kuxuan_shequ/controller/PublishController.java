@@ -3,20 +3,16 @@ package life.kuxuanzhuzhu.kuxuan_shequ.controller;
 import life.kuxuanzhuzhu.kuxuan_shequ.Exception.CustomErrorCode;
 import life.kuxuanzhuzhu.kuxuan_shequ.dto.QuestionDTO;
 import life.kuxuanzhuzhu.kuxuan_shequ.dto.Result;
-import life.kuxuanzhuzhu.kuxuan_shequ.enums.CommentTypeEnum;
+import life.kuxuanzhuzhu.kuxuan_shequ.dto.UserAndKxUser;
 import life.kuxuanzhuzhu.kuxuan_shequ.mapper.UserMapper;
 import life.kuxuanzhuzhu.kuxuan_shequ.model.Question;
-import life.kuxuanzhuzhu.kuxuan_shequ.model.User;
 import life.kuxuanzhuzhu.kuxuan_shequ.service.QuestionService;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author 邓鑫鑫
@@ -45,15 +41,6 @@ public class PublishController {
         return "publish";
     }
 
-    @Test
-    public void run() {
-        String str = "abc,12,3yy98,0";
-        String[] strs = str.split(",");
-        System.out.println(strs);
-        for (int i = 0, len = strs.length; i < len; i++) {
-            System.out.println(strs[i].toString());
-        }
-    }
 
     @GetMapping("/publish")
     public String publish() {
@@ -68,8 +55,8 @@ public class PublishController {
                             @RequestParam(value = "id", required = false) Long id,
                             HttpServletRequest request,
                             Model model) {
-        User user = (User) request.getSession().getAttribute("user");
-        if (null == user) {
+        UserAndKxUser userAndKxUser = (UserAndKxUser) request.getSession().getAttribute("user");
+        if (null == userAndKxUser) {
             model.addAttribute("error", "用户未登录");
             return Result.error(CustomErrorCode.NO_LOGIN);
         }
@@ -78,7 +65,7 @@ public class PublishController {
         question.setTitle(title);
         question.setDescription(description);
         question.setTag(tag);
-        question.setCreator(user.getId());
+        question.setCreator(userAndKxUser.getId());
         questionService.createOrUpdate(question);
         return Result.ok();
     }

@@ -22,10 +22,10 @@ public interface QuestionMapper {
     Integer count(String search);
 
     @Select("select * from question where creator = #{userId} order by ID desc limit #{size} offset #{offset}")
-    List<QuestionDTO> selectByUserId(@Param("userId") Long userId, @Param("size") Integer size, @Param("offset") Integer offset);
+    List<QuestionDTO> selectByUserId(@Param("userId") String userId, @Param("size") Integer size, @Param("offset") Integer offset);
 
     @Select("select count(1) from question where creator = #{userId}")
-    Integer countByUserId(@Param("userId") Long userId);
+    Integer countByUserId(@Param("userId") String userId);
 
     @Select("select * from question where id = #{id}")
     QuestionDTO getById(@Param("id")Long id);

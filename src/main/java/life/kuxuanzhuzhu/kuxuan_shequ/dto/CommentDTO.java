@@ -18,7 +18,7 @@ public class CommentDTO {
     private Long id;
     private Long parentId; //父级id
     private Integer type;//类型
-    private Long commentator;// 评论人
+    private String commentator;// 评论人
     private Long gmtCreate;//评论时间
     private Long gmtModified;//评论更新时间
     private Long likeCount; //点赞数
@@ -31,10 +31,10 @@ public class CommentDTO {
      */
     private String uName; //用户名称
     private String avatarUrl;//用户头像
-    private String accountId;
+    /*private String accountId;
     private String token;
     private Long uGmtCreate;//创建时间
-    private Long uGmtModified;//更新时间
+    private Long uGmtModified;//更新时间*/
 
     /*
     点赞

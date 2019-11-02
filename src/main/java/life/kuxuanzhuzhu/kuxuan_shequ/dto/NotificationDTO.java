@@ -10,13 +10,13 @@ import lombok.Data;
 @Data
 public class NotificationDTO {
     private Long id;  //通知编号
-    private Long notifier;  //发送人id
-    private Long receiver;  //接收人id
+    private String notifier;  //发送人id
+    private String receiver;  //接收人id
     private Long outerId;  //评论id或问题id或点赞id
     private Integer type;
     private Long gmtCreate;  //通知创建时间
     private Long gmtCheck;  //通知阅读时间
-    private Integer status;  //状态
+    private String status;  //状态
     private Long questionId;//问题id
 
 

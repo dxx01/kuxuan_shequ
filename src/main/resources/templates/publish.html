@@ -90,13 +90,13 @@
 <script id="tags-template" type="text/x-handlebars-template">
     <div>
         <ul class="nav nav-tabs" role="tablist" id="publish-tabList">
-            {{#each tag}}
+            {{#each data}}
             <li role="presentation" onclick="keep()"><a href="#tag-{{@index}}" aria-controls="tag-{{@index}}" role="tab"
                                                         data-toggle="tab">{{categoryName}}</a></li>
             {{/each}}
         </ul>
         <div class="tab-content" id="tab-content" style="border:1px solid #efefef;padding: 5px">
-            {{#each tag}}
+            {{#each data}}
             <div role="tabpanel" class="tab-pane pOverflow" id="tag-{{@index}}">
                 {{#each tags}}
                 <div class="qTag" data-id="{{@index}}" onclick="choose(this)">{{this}}</div>

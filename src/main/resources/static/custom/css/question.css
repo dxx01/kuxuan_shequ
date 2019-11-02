@@ -54,6 +54,19 @@
 .question .qSpan{
     visibility:hidden;
 }
+
+.question .qa{
+    font-size: 13px;
+    text-decoration: none;
+    color: #79a5e5;
+    margin-left: 10px;
+}
+
+.question  .qa:hover{
+    opacity:0.7;
+    cursor:pointer;
+}
+
 .question .qSpan a{
     font-size: 13px;
     text-decoration: none;

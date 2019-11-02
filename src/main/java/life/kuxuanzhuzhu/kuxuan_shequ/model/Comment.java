@@ -13,11 +13,11 @@ public class Comment {
     private Long id;
     private Long parentId; //父级id
     private Integer type;//类型
-    private Long commentator;// 评论人
+    private String commentator;// 评论人
     private Long gmtCreate;//评论时间
     private Long gmtModified;//评论更新时间
     private Long likeCount; //点赞数
     private String content; //评论内容
     private Integer commentCount;//评论数量
-    private Long toId; // @谁谁谁
+    private String toId; // @谁谁谁
 }

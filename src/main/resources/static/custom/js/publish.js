@@ -16,9 +16,14 @@ $(function () {
  * @param data
  */
 function addAllTags(data) {
-    for (i in data.tag) {
+    /*for (i in data.tag) {
         for (j in data.tag[i].tags) {
            tagsAll.push(data.tag[i].tags[j]);
+        }
+    }*/
+    for (i in data) {
+        for (j in data[i].tags) {
+            tagsAll.push(data[i].tags[j]);
         }
     }
 }
@@ -36,30 +41,32 @@ function showTag() {
             tags = tag.split(',');
         }
     }
-    $.ajax({
-        type: "GET",  // 请求方式
-        url: "/getTag",  // 目标资源
-        dataType: "json",  // 服务器响应的数据类型
-        success: function (data) {  // readystate == 4 && status == 200
-            console.log(data)
-            addAllTags(data);//把所有标签添加到缓存
-            //获取模板
-            var source = $("#tags-template").html();
-            //模板渲染
-            var template = Handlebars.compile(source);
-            //传输数据
-            var html = template(data);
-            //模版装载到dom节点上
-            $("#tags-templates").html(html);
-            $('#tab-content div:first-child').addClass('active');
-            $('#publish-tabList li:first-child').addClass('active');
-        }
-    });
     var isShow = $('#tags-templates').attr('data-true');
     $('#tag').focus();//input获取焦点
     if ('no' === isShow) {
         $('#tags-templates').attr('data-true','yes');
-
+        $.ajax({
+            type: "GET",  // 请求方式
+            url: "/getTag",  // 目标资源
+            dataType: "json",  // 服务器响应的数据类型
+            contentType: "application/json;charset=utf-8",
+            success: function (data) {  // readystate == 4 && status == 200
+                console.log(data)
+                var list = {};
+                list['data'] = data;
+                addAllTags(data);//把所有标签添加到缓存
+                //获取模板
+                var source = $("#tags-template").html();
+                //模板渲染
+                var template = Handlebars.compile(source);
+                //传输数据
+                var html = template(list);
+                //模版装载到dom节点上
+                $("#tags-templates").html(html);
+                $('#tab-content div:first-child').addClass('active');
+                $('#publish-tabList li:first-child').addClass('active');
+            }
+        });
     }
 }
 
@@ -256,7 +263,7 @@ function faBu() {
             if (data.code == 200) {
                 var isTrue = confirm(data.message + '，是否回到主页？');
                 if (isTrue) {
-                    window.location.href = "http://localhost:8887/index";
+                    window.location.href = "http://localhost/index";
                 } else {
                     window.location.reload();
                 }
@@ -264,7 +271,7 @@ function faBu() {
                 if (data.code == 2003) {
                     var isTrue = confirm(data.message);
                     if (isTrue) {
-                        window.open("https://github.com/login/oauth/authorize?client_id=d7b9062b3e2c2bce1433&redirect_uri=http://localhost:8887/callback&scope=user&state=1");
+                        window.open("https://github.com/login/oauth/authorize?client_id=d7b9062b3e2c2bce1433&redirect_uri=http://localhost/callback&scope=user&state=1");
                         window.localStorage.setItem("closable", true);
                     }
                 } else {

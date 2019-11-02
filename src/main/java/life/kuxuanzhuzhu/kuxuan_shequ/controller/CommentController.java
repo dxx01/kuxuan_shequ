@@ -4,6 +4,7 @@ import life.kuxuanzhuzhu.kuxuan_shequ.Exception.CustomErrorCode;
 import life.kuxuanzhuzhu.kuxuan_shequ.dto.CommentCreateDTO;
 import life.kuxuanzhuzhu.kuxuan_shequ.dto.CommentDTO;
 import life.kuxuanzhuzhu.kuxuan_shequ.dto.Result;
+import life.kuxuanzhuzhu.kuxuan_shequ.dto.UserAndKxUser;
 import life.kuxuanzhuzhu.kuxuan_shequ.enums.CommentTypeEnum;
 import life.kuxuanzhuzhu.kuxuan_shequ.model.Comment;
 import life.kuxuanzhuzhu.kuxuan_shequ.model.User;
@@ -35,9 +36,9 @@ public class CommentController {
     public Object comment(@RequestBody CommentCreateDTO commentCreateDTO,
                           HttpServletRequest request) {
 
-        User user = (User) request.getSession().getAttribute("user");
+        UserAndKxUser userAndKxUser = (UserAndKxUser) request.getSession().getAttribute("user");
         //判断用户是否登录
-        if (null == user) {
+        if (null == userAndKxUser) {
             return Result.error(CustomErrorCode.NO_LOGIN);
         }
 
@@ -53,7 +54,7 @@ public class CommentController {
         comment.setCommentCount(0);
         comment.setGmtCreate(System.currentTimeMillis());
         comment.setGmtModified(System.currentTimeMillis());
-        comment.setCommentator(user.getId());
+        comment.setCommentator(userAndKxUser.getId());
         comment.setLikeCount(0L);
         comment.setToId(commentCreateDTO.getToId());
         //插入数据
@@ -74,8 +75,8 @@ public class CommentController {
         List<CommentDTO> list = commentService.selectByParentId(parentId, CommentTypeEnum.COMMENT.getType());
         Map<Object,Object> map = new HashMap<>();
         map.put("list",list);
-        User user = (User) request.getSession().getAttribute("user");
-        map.put("user",user);
+        UserAndKxUser userAndKxUser = (UserAndKxUser) request.getSession().getAttribute("user");
+        map.put("user",userAndKxUser);
         return Result.ok(map);
     }
 

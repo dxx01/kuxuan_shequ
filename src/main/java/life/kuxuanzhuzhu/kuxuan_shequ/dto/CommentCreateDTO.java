@@ -13,5 +13,5 @@ public class CommentCreateDTO {
     private Long parentId; //问题编号
     private String content; // 评论内容
     private Integer type; //评论类型
-    private Long toId; // @谁谁谁
+    private String toId; // @谁谁谁
 }

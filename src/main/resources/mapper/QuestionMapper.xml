@@ -5,10 +5,21 @@
 
 
 
-	<select id="select" resultType="QuestionDTO">
+	<!--<select id="select" resultType="QuestionDTO">
 		select * from question
 		<if test='null != search and "" != search'>
 			where title like CONCAT('%',concat(#{search},'%'))
+		</if>
+		order by ID desc limit #{size} offset #{offset}
+	</select>-->
+
+
+
+	<select id="select" resultType="QuestionDTO">
+		select * from question
+		<if test='null != search and "" != search'>
+			<bind name="val" value="'%' + search + '%'"/>
+			where title like #{val}
 		</if>
 		order by ID desc limit #{size} offset #{offset}
 	</select>

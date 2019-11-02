@@ -54,6 +54,7 @@ public class DianZanService {
             notification.setOuterId(dianZan.getCommentId());
             notification.setType(3);
             notification.setQuestionId(dianZan.getQuestionId());
+            notification.setGmtCreate(System.currentTimeMillis());
             Integer row = notificationMapper.insert(notification);
             if(row == 0){
                 throw new CustomException(CustomErrorCode.DIANZAN_FAIL);

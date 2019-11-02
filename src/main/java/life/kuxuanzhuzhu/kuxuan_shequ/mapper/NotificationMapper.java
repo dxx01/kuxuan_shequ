@@ -23,11 +23,18 @@ public interface NotificationMapper {
     Integer insert(Notification notification);
 
     /**
-     * 获取通知条数
+     * 根据用户编号获取未读通知条数
      * @param id 接收人编号
      * @return
      */
-    Integer selectCountByReceiver(@Param("receiver") Long id);
+    Integer selectCountByReceiver(@Param("receiver") String id);
+
+    /**
+     * 根据用户编号获取所有通知条数
+     * @param id
+     * @return
+     */
+    Integer selectAllCountByReceiver(@Param("receiver") String id);
 
     /**
      * 根据接收人分页查询通知
@@ -36,5 +43,12 @@ public interface NotificationMapper {
      * @param offset
      * @return
      */
-    List<NotificationDTO> selectByReceiver(@Param("receiver") Long id, @Param("size") Integer size, @Param("offset") Integer offset);
+    List<NotificationDTO> selectByReceiver(@Param("receiver") String id, @Param("size") Integer size, @Param("offset") Integer offset);
+
+    /**
+     * 根据通知编号修改状态
+     * @param id
+     * @return
+     */
+    Integer updateStatusById(Long id);
 }

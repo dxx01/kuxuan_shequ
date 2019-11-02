@@ -143,6 +143,16 @@ function handlebarsTemplate(id, name, data) {
         var h = time.getHours();
         var mm = time.getMinutes();
         var s = time.getSeconds();
+
+        if(h <= 9){
+            d = '0'+d;
+        }
+        if(mm <= 9){
+            mm = '0'+mm;
+        }
+        if(s <= 9){
+            s = '0'+s;
+        }
         return y + '-' + m + '-' + d + ' ' + h + ':' + mm + ':' + s
     });
 
@@ -231,7 +241,7 @@ function changeChildBox(e) {
                     if (data.code == 2003) {
                         var isTrue = confirm(data.message);
                         if (isTrue) {
-                            window.open("https://github.com/login/oauth/authorize?client_id=d7b9062b3e2c2bce1433&redirect_uri=http://localhost:8887/callback&scope=user&state=1");
+                            window.open("https://github.com/login/oauth/authorize?client_id=d7b9062b3e2c2bce1433&redirect_uri=http://localhost/callback&scope=user&state=1");
                             window.localStorage.setItem("closable", true);
                         }
                     } else {
@@ -316,7 +326,7 @@ function deleteComment(id, parentId) {
                 if (data.code == 2003) {
                     var isTrue = confirm(data.message);
                     if (isTrue) {
-                        window.open("https://github.com/login/oauth/authorize?client_id=d7b9062b3e2c2bce1433&redirect_uri=http://localhost:8887/callback&scope=user&state=1");
+                        window.open("https://github.com/login/oauth/authorize?client_id=d7b9062b3e2c2bce1433&redirect_uri=http://localhost/callback&scope=user&state=1");
                         window.localStorage.setItem("closable", true);
                     }
                 } else {
@@ -349,7 +359,6 @@ function comment(id, parentId, content, type, toId) {
                 window.location.reload();
             } else {
                 if (data.code == 2003) {
-
                     $('#loginMtk').modal({show: true});
                 } else {
                     alert(data.message);

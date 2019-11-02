@@ -11,6 +11,8 @@ public class KuxuanShequApplicationTests {
 
     @Test
     public void contextLoads() {
+        Thread t = new Thread();
+        t.interrupt();
     }
 
 }
