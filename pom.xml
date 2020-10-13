@@ -152,7 +152,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.13-beta-3</version>
+            <version>4.13.1</version>
             <!-- 只用于test目录下的测试 -->
             <!--<scope>test</scope>-->
         </dependency>
